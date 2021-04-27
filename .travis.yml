@@ -11,5 +11,5 @@ script:
 
 after_success:
   - docker build -t tax/docker-practice .
-  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push tax/docker-practice
