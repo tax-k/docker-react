@@ -1,12 +1,15 @@
+language: generic
 sudo: required
-language: node_js
-node_js:
-  - 'stable'
 services:
   - docker
 
 before_install:
-  - docker build -t mia/docker-react -f Dockerfile.dev .
+  - docker build -t tax/docker-practice -f Dockerfile.dev .
 
 script:
-  - docker run mia/docker-react npm run test -- --coverage
+  - docker run -e CI=true tax/docker-practice npm run test
+
+after_success:
+  - docker build -t tax/docker-practice .
+  - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD"
+  - docker push tax/docker-practice
